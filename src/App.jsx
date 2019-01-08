@@ -12,8 +12,6 @@ class App extends Component {
       messages: [],
       currentUser: { name: null }
     };
-    this.postMessage = this.postMessage.bind(this);
-    this.updateCurrentUser = this.updateCurrentUser.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +46,7 @@ class App extends Component {
     }, 3000);
   }
 
-  postMessage(newMessageContent) {
+  postMessage = newMessageContent => {
     const username = this.state.currentUser.name
       ? this.state.currentUser.name
       : 'Anonymous';
@@ -62,9 +60,9 @@ class App extends Component {
         })
       });
     }
-  }
+  };
 
-  updateCurrentUser(newUsername) {
+  updateCurrentUser = newUsername => {
     const oldUsername = this.state.currentUser.name;
 
     this.setState({
@@ -76,7 +74,7 @@ class App extends Component {
         id: uuidv4()
       })
     });
-  }
+  };
 
   render() {
     return (

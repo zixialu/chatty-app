@@ -8,11 +8,6 @@ export default class ChatBar extends Component {
       username: '',
       content: ''
     };
-
-    this._handleSubmitUser = this._handleSubmitUser.bind(this);
-    this._handleSubmitMessage = this._handleSubmitMessage.bind(this);
-    this._updateContent = this._updateContent.bind(this);
-    this._updateUsername = this._updateUsername.bind(this);
   }
 
   render() {
@@ -36,27 +31,27 @@ export default class ChatBar extends Component {
     );
   }
 
-  _updateUsername(e) {
+  _updateUsername = e => {
     this.setState({
       username: e.target.value
     });
-  }
+  };
 
-  _updateContent(e) {
+  _updateContent = e => {
     this.setState({
       content: e.target.value
     });
-  }
+  };
 
-  _handleSubmitUser(e) {
+  _handleSubmitUser = e => {
     if (e.key === 'Enter') {
       this.props.onSubmitUser(this.state.username);
     }
-  }
+  };
 
-  _handleSubmitMessage(e) {
+  _handleSubmitMessage = e => {
     if (e.key === 'Enter') {
       this.props.onSubmitMessage(this.state.content);
     }
-  }
+  };
 }
