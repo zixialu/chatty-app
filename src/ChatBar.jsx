@@ -52,6 +52,7 @@ export default class ChatBar extends Component {
   _handleSubmitMessage = e => {
     if (e.key === 'Enter') {
       this.props.onSubmitMessage(this.state.content);
+      this.setState({ content: '' });
     }
   };
 }

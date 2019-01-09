@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import uuidv4 from 'uuid/v4';
 
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
@@ -15,65 +14,56 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      // currentUser: { name: 'Bob' }, // optional. if currentUser is not defined, it means the user is Anonymous
-      messages: [
-        {
-          username: 'Bob',
-          content: 'Has anyone seen my marbles?',
-          id: uuidv4()
-        },
-        {
-          username: 'Anonymous',
-          content:
-            'No, I think you lost them. You lost your marbles Bob. You lost them for good.',
-          id: uuidv4()
-        }
-      ]
-    });
+    this.socket = new WebSocket('ws://localhost:3001');
 
-    setTimeout(() => {
-      // Add a new message to the list of messages in the data store
-      const newMessage = {
-        id: 3,
-        username: 'Michelle',
-        content: 'Hello there!'
-      };
-      const messages = this.state.messages.concat(newMessage);
-      // Update the state of the app component.
-      // Calling setState will trigger a call to render() in App and all child components.
-      this.setState({ messages });
-    }, 3000);
+    this.socket.onopen = () => {
+      console.log('Connected to WebSocket');
+    };
+
+    this.socket.onmessage = payload => {
+      console.log('Got message from server', payload);
+      const json = JSON.parse(payload.data);
+
+      this.setState({
+        messages: [...this.state.messages, json]
+      });
+    };
+
+    this.socket.onclose = () => {
+      console.log('Disconnected from the WebSocket');
+    };
   }
 
-  postMessage = newMessageContent => {
-    const username = this.state.currentUser.name
-      ? this.state.currentUser.name
-      : 'Anonymous';
+  postMessage = content => {
+    const username = this.state.currentUser.name || 'Anonymous';
 
-    if (newMessageContent) {
-      this.setState({
-        messages: this.state.messages.concat({
+    if (content) {
+      this.socket.send(
+        JSON.stringify({
           username,
-          content: newMessageContent,
-          id: uuidv4()
+          content
         })
-      });
+      );
     }
   };
 
   updateCurrentUser = newUsername => {
     const oldUsername = this.state.currentUser.name;
 
-    this.setState({
-      currentUser: { name: newUsername },
-      messages: this.state.messages.concat({
-        isSystemMessage: true,
-        oldName: oldUsername,
-        newName: newUsername,
-        id: uuidv4()
-      })
-    });
+    this.setState(
+      {
+        currentUser: { name: newUsername }
+      },
+      () => {
+        this.socket.send(
+          JSON.stringify({
+            isSystemMessage: true,
+            oldName: oldUsername,
+            newName: newUsername
+          })
+        );
+      }
+    );
   };
 
   render() {
