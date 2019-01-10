@@ -40,6 +40,7 @@ class App extends Component {
     if (content) {
       this.socket.send(
         JSON.stringify({
+          type: 'incomingMessage',
           username,
           content
         })
@@ -57,7 +58,7 @@ class App extends Component {
       () => {
         this.socket.send(
           JSON.stringify({
-            isSystemMessage: true,
+            type: 'incomingNotification',
             oldName: oldUsername,
             newName: newUsername
           })
