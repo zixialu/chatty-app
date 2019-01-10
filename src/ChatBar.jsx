@@ -31,12 +31,14 @@ export default class ChatBar extends Component {
     );
   }
 
+  // Control the username field
   _updateUsername = e => {
     this.setState({
       username: e.target.value
     });
   };
 
+  // Control the content field
   _updateContent = e => {
     this.setState({
       content: e.target.value

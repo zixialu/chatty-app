@@ -17,30 +17,22 @@ class App extends Component {
   componentDidMount() {
     this.socket = new WebSocket('ws://localhost:3001');
 
-    this.socket.onopen = () => {
-      console.log('Connected to WebSocket');
-    };
+    this.socket.onopen = () => {};
 
     this.socket.onmessage = payload => {
-      console.log('Got message from server', payload);
-
       const json = JSON.parse(payload.data);
 
       if (json.type === 'IncomingUsercount') {
         // Update user counts given type = 'IncomingUsercount'
-        this.setState({
-          usercount: json.usercount
-        });
+        this.setState({ usercount: json.usercount });
       } else {
         // Handle message otherwise
-        this.setState({
-          messages: [...this.state.messages, json]
-        });
+        this.setState({ messages: [...this.state.messages, json] });
       }
     };
 
     this.socket.onclose = () => {
-      console.log('Disconnected from the WebSocket');
+      alert('Disconnected from WebSocket!');
     };
   }
 
