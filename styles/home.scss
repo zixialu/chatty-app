@@ -70,16 +70,26 @@ body {
   position: fixed;
   right: 0;
   top: 0;
-}
 
-.navbar-brand {
-  color: inherit;
-  display: block;
-  float: left;
-  font-weight: 700;
-  font-size: 28px;
-  height: 60px;
-  line-height: 60px;
-  padding: 0 10px;
-  text-decoration: none;
+  .navbar-brand {
+    color: inherit;
+    display: block;
+    float: left;
+    font-weight: 700;
+    font-size: 28px;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 10px;
+    text-decoration: none;
+  }
+
+  .usercount {
+    color: inherit;
+    display: block;
+    float: right;
+    height: 60px;
+    line-height: 60px;
+    padding: 0 10px;
+    text-decoration: none;
+  }
 }

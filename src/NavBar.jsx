@@ -15,5 +15,5 @@ function Usercount(props) {
   const onlineString = `${props.usercount} ${
     props.usercount === 1 ? 'user' : 'users'
   } online`;
-  return <span>{onlineString}</span>;
+  return <div className="usercount">{onlineString}</div>;
 }
