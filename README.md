@@ -2,7 +2,11 @@
 
 A simple instant messenger powered by WebSockets.
 
-### Usage
+## Product
+
+![Screenshot of Chatty App](https://raw.githubusercontent.com/zixialu/chatty-app/master/docs/chatty-app-01.png)
+
+## Usage
 
 1. Clone the repository to your computer.
 
@@ -16,7 +20,7 @@ A simple instant messenger powered by WebSockets.
 
 6. Navigate to `http://localhost:3000/`.
 
-### Dependencies
+## Dependencies
 
 - React
 - Webpack
