@@ -44,9 +44,13 @@ wss.on('connection', ws => {
   console.log('Client connected');
   wss.broadcastUsercount();
 
+  // Generate a random color for the socket
+  ws.color = getRandomColorString();
+
   ws.on('message', data => {
     const messageObj = JSON.parse(data);
     messageObj.id = uuidv4();
+    messageObj.color = ws.color;
 
     console.log(messageObj);
 
@@ -58,8 +62,14 @@ wss.on('connection', ws => {
         break;
 
       case 'postMessage':
-        messageObj.type = 'incomingMessage';
-        wss.broadcastJSON(messageObj);
+        // Check if the message is an image url
+        if (messageObj.content.match(/^.+:\/\/.+\/.+\.(jpg|png|gif)$/)) {
+          messageObj.type = 'incomingImage';
+          wss.broadcastJSON(messageObj);
+        } else {
+          messageObj.type = 'incomingMessage';
+          wss.broadcastJSON(messageObj);
+        }
         break;
 
       default:
@@ -73,3 +83,8 @@ wss.on('connection', ws => {
     wss.broadcastUsercount();
   });
 });
+
+function getRandomColorString() {
+  const colors = ['#9C27B0', '#009688', '#E91E63', '#2196F3'];
+  return colors[Math.floor(Math.random() * 4)];
+}
