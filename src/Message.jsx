@@ -4,10 +4,10 @@ export default class Message extends Component {
   render() {
     switch (this.props.message.type) {
       case 'incomingNotification':
-        return <SystemMessage message={this.props.message} />;
+        return <SystemMessageContent message={this.props.message} />;
 
       case 'incomingMessage':
-        return <ChatMessage message={this.props.message} />;
+        return <ChatMessageContent message={this.props.message} />;
 
       default:
         return;
@@ -15,7 +15,7 @@ export default class Message extends Component {
   }
 }
 
-function SystemMessage(props) {
+function SystemMessageContent(props) {
   return (
     <div className="message system">
       {props.message.oldName || 'Anonymous'} changed their name to{' '}
@@ -24,7 +24,7 @@ function SystemMessage(props) {
   );
 }
 
-function ChatMessage(props) {
+function ChatMessageContent(props) {
   return (
     <div className="message">
       <span className="message-username">{props.message.username}</span>

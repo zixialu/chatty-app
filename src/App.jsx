@@ -9,7 +9,8 @@ class App extends Component {
     super();
     this.state = {
       messages: [],
-      currentUser: { name: null }
+      currentUser: { name: null },
+      usercount: 0
     };
   }
 
@@ -22,11 +23,20 @@ class App extends Component {
 
     this.socket.onmessage = payload => {
       console.log('Got message from server', payload);
+
       const json = JSON.parse(payload.data);
 
-      this.setState({
-        messages: [...this.state.messages, json]
-      });
+      if (json.type === 'IncomingUsercount') {
+        // Update user counts given type = 'IncomingUsercount'
+        this.setState({
+          usercount: json.usercount
+        });
+      } else {
+        // Handle message otherwise
+        this.setState({
+          messages: [...this.state.messages, json]
+        });
+      }
     };
 
     this.socket.onclose = () => {
@@ -40,7 +50,7 @@ class App extends Component {
     if (content) {
       this.socket.send(
         JSON.stringify({
-          type: 'incomingMessage',
+          type: 'postMessage',
           username,
           content
         })
@@ -58,7 +68,7 @@ class App extends Component {
       () => {
         this.socket.send(
           JSON.stringify({
-            type: 'incomingNotification',
+            type: 'postNotification',
             oldName: oldUsername,
             newName: newUsername
           })
@@ -70,7 +80,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NavBar />
+        <NavBar usercount={this.state.usercount} />
         <MessageList messages={this.state.messages} />
         <ChatBar
           currentUser={this.state.currentUser}

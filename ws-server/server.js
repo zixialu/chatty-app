@@ -29,11 +29,20 @@ wss.broadcast = data => {
   });
 };
 
+wss.broadcastUsercount = () => {
+  const usercount = wss.clients.size;
+  wss.broadcastJSON({
+    type: 'IncomingUsercount',
+    usercount
+  });
+};
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', ws => {
   console.log('Client connected');
+  wss.broadcastUsercount();
 
   ws.on('message', data => {
     const messageObj = JSON.parse(data);
@@ -41,9 +50,26 @@ wss.on('connection', ws => {
 
     console.log(messageObj);
 
-    wss.broadcastJSON(messageObj);
+    // TODO: Perform validation on these objects
+    switch (messageObj.type) {
+      case 'postNotification':
+        messageObj.type = 'incomingNotification';
+        wss.broadcastJSON(messageObj);
+        break;
+
+      case 'postMessage':
+        messageObj.type = 'incomingMessage';
+        wss.broadcastJSON(messageObj);
+        break;
+
+      default:
+        break;
+    }
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    wss.broadcastUsercount();
+  });
 });
