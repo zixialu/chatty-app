@@ -61,20 +61,22 @@ class App extends Component {
   updateCurrentUser = newUsername => {
     const oldUsername = this.state.currentUser.name;
 
-    this.setState(
-      {
-        currentUser: { name: newUsername }
-      },
-      () => {
-        this.socket.send(
-          JSON.stringify({
-            type: 'postNotification',
-            oldName: oldUsername,
-            newName: newUsername
-          })
-        );
-      }
-    );
+    if (newUsername !== oldUsername) {
+      this.setState(
+        {
+          currentUser: { name: newUsername }
+        },
+        () => {
+          this.socket.send(
+            JSON.stringify({
+              type: 'postNotification',
+              oldName: oldUsername,
+              newName: newUsername
+            })
+          );
+        }
+      );
+    }
   };
 
   render() {
