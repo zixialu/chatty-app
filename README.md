@@ -6,7 +6,7 @@ A simple instant messenger powered by WebSockets.
 
 ![Screenshot of Chatty App](https://raw.githubusercontent.com/zixialu/chatty-app/master/docs/chatty-app-01.png)
 
-## Usage
+## Getting Started
 
 1. Clone the repository to your computer.
 
