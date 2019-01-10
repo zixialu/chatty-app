@@ -6,7 +6,7 @@ A simple instant messenger powered by WebSockets.
 
 1. Clone the repository to your computer.
 
-2. Run `npm install` to install all dependencies.
+2. Run `npm install` to install dependencies.
 
 3. Run `npm install` again inside the `/ws-server` directory to install dependencies for the WebSocket server.
 
@@ -14,7 +14,7 @@ A simple instant messenger powered by WebSockets.
 
 5. Start the Webpack server by running `npm start` in the root directory `/`.
 
-6. Navigate to `http://localhost:3000/`
+6. Navigate to `http://localhost:3000/`.
 
 ### Dependencies
 
