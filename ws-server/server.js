@@ -29,6 +29,7 @@ wss.broadcast = data => {
   });
 };
 
+// Broadcast user count whenever a WebSocket is opened or closed
 wss.broadcastUsercount = () => {
   const usercount = wss.clients.size;
   wss.broadcastJSON({
@@ -52,9 +53,10 @@ wss.on('connection', ws => {
     messageObj.id = uuidv4();
     messageObj.color = ws.color;
 
-    console.log(messageObj);
+    console.log('\n', messageObj);
 
     // TODO: Perform validation on these objects
+    // Handle username change system messages
     switch (messageObj.type) {
       case 'postNotification':
         messageObj.type = 'incomingNotification';
@@ -64,9 +66,11 @@ wss.on('connection', ws => {
       case 'postMessage':
         // Check if the message is an image url
         if (messageObj.content.match(/^.+:\/\/.+\/.+\.(jpg|png|gif)$/)) {
+          // Handle display of image links
           messageObj.type = 'incomingImage';
           wss.broadcastJSON(messageObj);
         } else {
+          // Handle standard messages
           messageObj.type = 'incomingMessage';
           wss.broadcastJSON(messageObj);
         }
@@ -85,6 +89,7 @@ wss.on('connection', ws => {
 });
 
 function getRandomColorString() {
+  // Return a random colour from this array of colours
   const colors = ['#9C27B0', '#009688', '#E91E63', '#2196F3'];
   return colors[Math.floor(Math.random() * 4)];
 }
